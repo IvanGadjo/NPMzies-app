@@ -4,24 +4,22 @@
   "description": "",
   "scripts": {
     "start": "ts-node index.ts",
-    "migrations:generate": "drizzle-kit generate:mysql",
-    "migrations:push": "node -r esbuild-register database/migrate.ts",
-    "db:push": "drizzle-kit push:mysql",
-    "migrations:drop": "drizzle-kit drop --config=drizzle.config.ts"
+    "generate-migration": "drizzle-kit generate:pg --out database/migrations --schema database/schema.ts",
+    "migrate": "ts-node database/migrate"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@planetscale/database": "^1.7.0",
-    "dotenv": "^16.3.1",
     "drizzle-orm": "^0.27.0",
     "express": "^4.18.2",
-    "ts-node": "^10.9.1",
-    "undici": "^5.22.1"
+    "pg": "^8.11.2",
+    "ts-node": "^10.9.1"
   },
   "devDependencies": {
     "@types/express": "^4.17.17",
     "@types/node": "^20.3.1",
+    "@types/pg": "^8.10.2",
+    "dotenv": "^16.3.1",
     "drizzle-kit": "^0.19.10",
     "typescript": "^5.1.3"
   }

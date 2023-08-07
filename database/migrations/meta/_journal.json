@@ -1,12 +1,19 @@
 {
   "version": "5",
-  "dialect": "mysql",
+  "dialect": "pg",
   "entries": [
     {
       "idx": 0,
       "version": "5",
-      "when": 1690133153317,
-      "tag": "0000_smiling_prima",
+      "when": 1691411683040,
+      "tag": "0000_bright_wild_child",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1691413600425,
+      "tag": "0001_demonic_amazoness",
       "breakpoints": true
     }
   ]
