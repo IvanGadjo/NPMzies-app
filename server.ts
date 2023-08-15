@@ -18,3 +18,7 @@ app.get("/", async (req: Request, res: Response) => {
 
   res.send("Hello World!");
 });
+
+app.get("/hello", async (req: Request, res: Response) => {
+  res.send("Hello World!");
+});
