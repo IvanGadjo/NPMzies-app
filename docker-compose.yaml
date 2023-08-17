@@ -1,12 +1,13 @@
-version: "4.13.1"
+version: "4.13.1"             # Latest docker-compose version
 
 services:                     # Services you will be orchestrating
   npmzies-api:
     container_name: api_container
-    # image: node:hydrogen    # The image from our Dockerfile for this servuce
+    # image: node:hydrogen    # The image from our Dockerfile for this service
     build: ./                 # Build the container from the local Dockerfile instead of using a default image like node:hydrogen
-    command: command          # Command to execute after the container is started
+    command: npm start        # Command to execute after the container is started
     ports:
-      - "3002:8080"
-    depends_on:               # On which other services from the same yaml file this service depends
-      - postgres-db
+      - "3010:3002"           # left: local, right: docker container port
+
+    # depends_on:               # On which other services from the same yaml file this service depends
+    #   - postgres-db

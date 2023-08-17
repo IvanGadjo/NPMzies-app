@@ -2,8 +2,11 @@ import express, { Express, Request, Response } from "express";
 import { InferModel } from "drizzle-orm";
 import { db } from "./database/connection";
 import * as schema from "./database/schema";
+import morgan from "morgan";
 
 export const app: Express = express();
+
+app.use(morgan("combined"));
 
 app.get("/", async (req: Request, res: Response) => {
   // * create a new test project
@@ -20,5 +23,6 @@ app.get("/", async (req: Request, res: Response) => {
 });
 
 app.get("/hello", async (req: Request, res: Response) => {
+  console.log("Hello World on da server!");
   res.send("Hello World!");
 });
