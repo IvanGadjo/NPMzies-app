@@ -3,12 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "ts-node index.ts",
+    "start": "ts-node-dev index.ts",
     "generate-migration": "drizzle-kit generate:pg --out database/migrations --schema database/schema.ts",
-    "migrate": "ts-node database/migrate",
-    "docker-build": "docker build -t npmziescont .",
-    "docker-run": "docker run -it -p 3002:3002 npmziescont",
-    "docker-compose-up": "docker-compose up --build"
+    "migrate": "ts-node database/migrate"
   },
   "author": "",
   "license": "ISC",
@@ -26,6 +23,7 @@
     "@types/pg": "^8.10.2",
     "dotenv": "^16.3.1",
     "drizzle-kit": "^0.19.10",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^5.1.3"
   }
 }

@@ -27,3 +27,5 @@
 
 - always start containers with _up_, not with _run_. Otherwise the container name is hashed and you cannot kill it with _down_, only via the GUI
 - Flow: down -> make changes -> up -> down ....
+
+Nice overview of docker-compose: https://www.linux.com/topic/cloud/docker-volumes-and-networks-compose/

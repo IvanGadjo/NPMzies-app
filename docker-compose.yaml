@@ -8,6 +8,23 @@ services:                     # Services you will be orchestrating
     command: npm start        # Command to execute after the container is started
     ports:
       - "3010:3002"           # left: local, right: docker container port
+    volumes:                  # listen for changes in ./, and map those changes to /usr/src/npmzies-app (the local dir inside the container, as per Dockerfile)
+      - ./:/usr/src/npmzies-app
+    environment:
+      POSTRGRES_USER: postgres
+      POSTGRES_PASSWORD: randomPass 
+      POSTGRES_DB: test-npmzies-docker
+      POSTGRES_HOST: postgres-db          # Localy this would be localhost, but in the container it should be the service for the db definied lower
+    depends_on:                           # On which other services from the same yaml file this service depends
+      - postgres-db 
 
-    # depends_on:               # On which other services from the same yaml file this service depends
-    #   - postgres-db
+  postgres-db:
+    container_name: db_container
+    image: postgres
+    ports: 
+      - "3001:5432"
+    environment:
+      POSTRGRES_USER: postgres
+      POSTGRES_PASSWORD: randomPass
+      POSTGRES_DB: test-npmzies-docker
+      POSTGRES_HOST: postgres-db

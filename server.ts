@@ -6,7 +6,7 @@ import morgan from "morgan";
 
 export const app: Express = express();
 
-app.use(morgan("combined"));
+app.use(morgan("short"));
 
 app.get("/", async (req: Request, res: Response) => {
   // * create a new test project
