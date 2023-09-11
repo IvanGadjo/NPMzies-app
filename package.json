@@ -2,6 +2,7 @@
   "name": "npmzies",
   "version": "1.0.0",
   "description": "",
+  "main": "index.ts",
   "scripts": {
     "start": "ts-node-dev index.ts",
     "generate-migration": "drizzle-kit generate:pg --out database/migrations --schema database/schema.ts",
