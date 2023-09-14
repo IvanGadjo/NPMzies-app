@@ -1,8 +1,9 @@
-import { db } from "../database/connection";
-import { publicProcedure, router } from "../trpc";
-// import * as schema from "../database/schema";
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { eq } from "drizzle-orm";
+
+import { db } from "../database/connection";
+import { publicProcedure, router } from "../trpc";
 import { users } from "../database/schema";
 
 export const userRouter = router({
@@ -11,11 +12,10 @@ export const userRouter = router({
       const usersList = await db.select().from(users);
       return usersList;
     } catch (error) {
-      throw new Error("Cannot find all users"); // ! Maybe use TRPCError
-      // throw new TRPCError({
-      //   code: 'UNAUTHORIZED',
-      //   message: 'You are not authorized',
-      // })
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Cannot find all users",
+      });
     }
   }),
   userById: publicProcedure.input(z.number()).query(async (opts) => {
@@ -26,10 +26,16 @@ export const userRouter = router({
 
       if (user.length === 1) return user;
       else {
-        // ! Throw new error
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Cannot find user by id",
+        });
       }
     } catch (error) {
-      throw new Error("Cannot find user by id");
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "Cannot find user by id",
+      });
     }
   }),
   userCreate: publicProcedure
@@ -39,7 +45,10 @@ export const userRouter = router({
         const user = await db.insert(users).values(opts.input).returning();
         return user;
       } catch (error) {
-        throw new Error("Cannot create user");
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Cannot create user",
+        });
       }
     }),
 });
