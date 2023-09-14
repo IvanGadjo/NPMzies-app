@@ -29,3 +29,7 @@
 - Flow: down -> make changes -> up -> down ....
 
 Nice overview of docker-compose: https://www.linux.com/topic/cloud/docker-volumes-and-networks-compose/
+
+### Drizzle commands
+
+- On schema update, first run _npm run generate-migration_, then _npm migrate_

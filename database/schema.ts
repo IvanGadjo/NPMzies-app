@@ -21,12 +21,6 @@ export const projects = pgTable("projects", {
   description: varchar("description", { length: 100 }),
 });
 
-export const projectParts = pgTable("project_parts", {
-  id: serial("id").primaryKey(),
-  name: varchar("name", { length: 30 }).notNull(),
-  projectId: integer("project_id"),
-});
-
 export const npmPackages = pgTable("npm_packages", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 30 }).notNull(),
@@ -34,7 +28,7 @@ export const npmPackages = pgTable("npm_packages", {
   version: integer("version"),
   lastUpdated: date("lastUpdated"),
   repoURL: varchar("repo_url", { length: 100 }),
-  projectPartId: integer("project_part_id"),
+  projectId: integer("project_id"),
 });
 
 // * Relations
@@ -44,24 +38,13 @@ export const usersRelations = relations(users, ({ many }) => ({
 
 export const projectsRelations = relations(projects, ({ many }) => ({
   usersToProjects: many(usersToProjects),
-  projectParts: many(projectParts),
+  npmPackages: many(npmPackages),
 }));
 
-export const projectPartsRelations = relations(
-  projectParts,
-  ({ one, many }) => ({
-    project: one(projects, {
-      fields: [projectParts.projectId],
-      references: [projects.id],
-    }),
-    npmPackages: many(npmPackages),
-  })
-);
-
 export const npmPackagesRelations = relations(npmPackages, ({ one }) => ({
-  projectPart: one(projectParts, {
-    fields: [npmPackages.projectPartId],
-    references: [projectParts.id],
+  project: one(projects, {
+    fields: [npmPackages.projectId],
+    references: [projects.id],
   }),
 }));
 
