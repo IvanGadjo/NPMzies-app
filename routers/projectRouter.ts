@@ -1,9 +1,10 @@
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
+import { eq } from "drizzle-orm";
 
 import { publicProcedure, router } from "../trpc";
 import { db } from "../database/connection";
-import { projects, usersToProjects } from "../database/schema";
+import { projects, usersToProjects, users } from "../database/schema";
 
 export const projectRouter = router({
   projectCreate: publicProcedure
@@ -34,6 +35,30 @@ export const projectRouter = router({
         throw new TRPCError({
           code: "INTERNAL_SERVER_ERROR",
           message: "Cannot create project",
+        });
+      }
+    }),
+
+  projectsList: publicProcedure
+    .input(z.object({ userId: z.number() }))
+    .query(async (opts) => {
+      const { userId } = opts.input;
+
+      try {
+        // * find projects from users to proj table
+        // const projectIds = await db.select({projectId: usersToProjects.projectId}).from(usersToProjects).where(eq(usersToProjects.userId, userId))
+        // const projectIds = await db.select().from(users).where(eq(users.id, userId)).innerJoin(projects, eq(usersToProjects.projectId, projects.id))
+        const projectsList = await db
+          .select()
+          .from(projects)
+          .leftJoin(usersToProjects, eq(projects.id, usersToProjects.projectId))
+          .where(eq(usersToProjects.userId, userId));
+
+        return projectsList;
+      } catch (error) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Cannot find projects list",
         });
       }
     }),
