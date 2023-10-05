@@ -62,4 +62,53 @@ export const projectRouter = router({
         });
       }
     }),
+
+  projectUpdate: publicProcedure
+    .input(
+      z.object({
+        id: z.number(),
+        name: z.string(),
+        description: z.string(),
+      })
+    )
+    .mutation(async (opts) => {
+      const { id, name, description } = opts.input;
+
+      try {
+        const updatedProject = await db
+          .update(projects)
+          .set({ name, description })
+          .where(eq(projects.id, id))
+          .returning();
+
+        return updatedProject;
+      } catch (error) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Cannot find projects list",
+        });
+      }
+    }),
+
+  projectDelete: publicProcedure
+    .input(
+      z.object({
+        id: z.number(),
+      })
+    )
+    .mutation(async (opts) => {
+      const { id } = opts.input;
+
+      try {
+        await db.delete(projects).where(eq(projects.id, id));
+        await db
+          .delete(usersToProjects)
+          .where(eq(usersToProjects.projectId, id));
+      } catch (error) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Cannot find projects list",
+        });
+      }
+    }),
 });
